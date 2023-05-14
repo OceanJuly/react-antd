@@ -10,6 +10,7 @@ const BarChartWidgetLazy = React.lazy(() => import('./components/BarChartWidget'
 const PieChartWidgetLazy = React.lazy(() => import('./components/PieChart'));
 const TableWidgetLazy = React.lazy(() => import('./components/tableCom'));
 const DataWidgetLazy = React.lazy(() => import('./components/dataCom'));
+const SelectList = React.lazy(() => import('./components/selectList'));
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 interface DashboardWidgetInfo {
@@ -77,8 +78,9 @@ function DashboardGird() {
 
 
     const createWidget = (widget: DashboardWidgetInfo) => {
+        const key = widget.layout.i ? widget.layout.i : '123'
         return (
-            <div className={'dashboard-widget-wrapper'} key={widget.layout.i} data-grid={widget.layout}>
+            <div className={'dashboard-widget-wrapper'} key={key} data-grid={widget.layout}>
                 <span className='dashboard-widget-header'>
                     <QuestionCircleOutlined className={'dashboard-widget-header-icon'} />
                     {widget.layout.static ? <LockOutlined className={'dashboard-widget-header-icon'} onClick={() => unlockWidget(widget)} /> : (
@@ -92,8 +94,15 @@ function DashboardGird() {
 
 
     const onAddWidget = () => {
+        const obj = {
+            0: 'BarChartWidget',
+            1: 'PieChartWidget',
+            2: 'table',
+            3: 'data'
+        }
         const x = (widgets.length * 3) % (currentCols);
-        const widgetName = x % 2 == 0 ? 'BarChartWidget' : 'PieChartWidget'
+        const widgetName = obj[widgets.length]
+        if (!widgetName) return
         const newWidgets = [...widgets, {
             widgetName: widgetName,
             layout: { i: widgetName, x: x, y: Infinity, w: 3, h: 2, static: false }
@@ -101,7 +110,8 @@ function DashboardGird() {
         setWidgets(newWidgets);
     }
 
-    const showCompItem = (e) => {
+    const handleClick = (e) => {
+        console.log(e);
         let widgetName = ''
         const x = (widgets.length * 3) % (currentCols);
         switch (e.target.id) {
@@ -149,20 +159,23 @@ function DashboardGird() {
     return (
         <>
             <Button onClick={onAddWidget}>add widget</Button>
-            <ul onClick={showCompItem}>
-                <li><Button id="1">折线图</Button></li>
-                <li><Button id="2">圆饼图</Button></li>
-                <li><Button id="3">表格</Button></li>
-                <li><Button id="4">数据</Button></li>
-            </ul>
+            {/*<ul onClick={showCompItem}>*/}
+            {/*    <li><Button id="1">折线图</Button></li>*/}
+            {/*    <li><Button id="2">圆饼图</Button></li>*/}
+            {/*    <li><Button id="3">表格</Button></li>*/}
+            {/*    <li><Button id="4">数据</Button></li>*/}
+            {/*</ul>*/}
+            <SelectList onClick={handleClick}></SelectList>
             <ResponsiveReactGridLayout
                 layouts={getLayouts()}
                 className={'layouts'}
                 onLayoutChange={onLayoutChange}
                 onBreakpointChange={onBreakpointChange}>
-
                 {widgets?.map(item => createWidget(item))}
             </ResponsiveReactGridLayout>
+            {/*<div className="item-wrap">*/}
+            {/*    {widgets?.map(item => createWidget(item))}*/}
+            {/*</div>*/}
         </>
     );
 }

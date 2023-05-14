@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense} from 'react';
 import {
     DesktopOutlined,
     FileOutlined,
@@ -8,8 +8,10 @@ import {
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import './index.css'
 // const DashBoard = React.lazy(() => import('./pages/dashboard/dashboard.tsx'));
 import Dashboard from "./pages/dashboard/dashboard";
+
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -30,7 +32,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem('DashBoard', '1', <PieChartOutlined />),
+    getItem('DashBoard', 'home', <PieChartOutlined />),
     getItem('Option 2', '2', <DesktopOutlined />),
     getItem('User', 'sub1', <UserOutlined />, [
         getItem('Tom', '3'),
@@ -41,17 +43,20 @@ const items: MenuItem[] = [
     getItem('Files', '9', <FileOutlined />),
 ];
 
+const go2Page = (e: any) => {
+    console.log(e);
+}
+
 const App: React.FC = () => {
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                 <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+                <Menu onClick={go2Page} theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
             </Sider>
             <Layout className="site-layout">
                 <Header style={{ padding: 0, background: colorBgContainer }} />
@@ -62,6 +67,9 @@ const App: React.FC = () => {
                     </Breadcrumb>
                     <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
                         <Dashboard></Dashboard>
+                        {/*<Routes>*/}
+                        {/*    <Route path="/home" element={<Dashboard />} />*/}
+                        {/*</Routes>*/}
                     </div>
                 </Content>
             </Layout>

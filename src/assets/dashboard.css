@@ -6,8 +6,16 @@
     height: 100%
 }
 
+.item-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .dashboard-widget-wrapper {
     background: white;
+    /*min-width: 600px;*/
+    /*min-height: 360px;*/
+    position: relative;
 }
 
 .dashboard-widget-wrapper:hover {
