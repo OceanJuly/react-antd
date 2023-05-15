@@ -19,6 +19,7 @@ interface DashboardWidgetInfo {
 }
 
 function DashboardGird() {
+    let a: any = 0
 
     const [widgets, setWidgets] = useState<DashboardWidgetInfo[]>([]);
     const [currentCols, setCurrentCols] = useState<number>(12);
@@ -78,7 +79,7 @@ function DashboardGird() {
 
 
     const createWidget = (widget: DashboardWidgetInfo) => {
-        const key = widget.layout.i ? widget.layout.i : '123'
+        const key = widget.widgetName || a++
         return (
             <div className={'dashboard-widget-wrapper'} key={key} data-grid={widget.layout}>
                 <span className='dashboard-widget-header'>
@@ -94,7 +95,7 @@ function DashboardGird() {
 
 
     const onAddWidget = () => {
-        const obj = {
+        const obj: any = {
             0: 'BarChartWidget',
             1: 'PieChartWidget',
             2: 'table',
@@ -110,28 +111,12 @@ function DashboardGird() {
         setWidgets(newWidgets);
     }
 
-    const handleClick = (e) => {
-        console.log(e);
-        let widgetName = ''
+    const handleClick = (e: any) => {
+        let widgetName = e.target.id
+        console.log(e.target.id)
         const x = (widgets.length * 3) % (currentCols);
-        switch (e.target.id) {
-            case '1': {
-                widgetName = 'BarChartWidget'
-                break
-            }
-            case '2': {
-                widgetName = 'PieChartWidget'
-                break
-            }
-            case '3': {
-                widgetName = 'table'
-                break
-            }
-            case '4': {
-                widgetName = 'data'
-                break
-            }
-        }
+        
+        console.log(widgetName)
         const newWidgets = [...widgets, {
             widgetName: widgetName,
             layout: { i: widgetName, x: x, y: Infinity, w: 3, h: 2, static: false }
@@ -145,7 +130,7 @@ function DashboardGird() {
 
     const onLayoutChange = (layouts: any[]) => {
         for (const layout of layouts) {
-            const updateIndex = findIndex(widgets, (w) => w.layout.i === layout.i);
+            const updateIndex = findIndex(widgets, (w: any) => w.layout.i === layout.i);
             if (updateIndex !== -1) {
                 const updateWidget = widgets[updateIndex];
                 updateWidget.layout = layout;
@@ -165,7 +150,7 @@ function DashboardGird() {
             {/*    <li><Button id="3">表格</Button></li>*/}
             {/*    <li><Button id="4">数据</Button></li>*/}
             {/*</ul>*/}
-            <SelectList onClick={handleClick}></SelectList>
+            <SelectList handleClick={handleClick}></SelectList>
             <ResponsiveReactGridLayout
                 layouts={getLayouts()}
                 className={'layouts'}

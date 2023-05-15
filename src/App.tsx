@@ -11,6 +11,7 @@ import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import './index.css'
 // const DashBoard = React.lazy(() => import('./pages/dashboard/dashboard.tsx'));
 import Dashboard from "./pages/dashboard/dashboard";
+import CustomBoard from './pages/customBoard';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -66,7 +67,8 @@ const App: React.FC = () => {
                         <Breadcrumb.Item>Bill</Breadcrumb.Item>
                     </Breadcrumb>
                     <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
-                        <Dashboard></Dashboard>
+                        {/* <Dashboard></Dashboard> */}
+                        <CustomBoard></CustomBoard>
                         {/*<Routes>*/}
                         {/*    <Route path="/home" element={<Dashboard />} />*/}
                         {/*</Routes>*/}
