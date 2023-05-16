@@ -23,10 +23,17 @@ interface DashboardWidgetInfo {
     layout: Layout
 }
 
+let _widgets: Array<any> = []
+try {
+    _widgets = JSON.parse(localStorage.getItem('widgets') || '') || []
+} catch (e) {
+    console.log(e)
+}
+
 function DashboardGird() {
     let a: any = 0
 
-    const [widgets, setWidgets] = useState<DashboardWidgetInfo[]>([]);
+    const [widgets, setWidgets] = useState<DashboardWidgetInfo[]>(_widgets);
     const [currentCols, setCurrentCols] = useState<number>(12);
 
     const getLayouts: any = () => {
@@ -147,13 +154,24 @@ function DashboardGird() {
         setWidgets(newWidgets);
     }
 
+    const saveData = () => {
+        localStorage.setItem('widgets', JSON.stringify(widgets));
+    }
+
+    const clearData = () => {
+        localStorage.removeItem('widgets');
+    }
+
     return (
         <>
             <Button onClick={onAddWidget}>add widget</Button>
+            <Button onClick={saveData}>saveData</Button>
+            <Button onClick={clearData}>ClearData</Button>
             <SelectList handleClick={handleClick}></SelectList>
             <ResponsiveReactGridLayout
                 layouts={getLayouts()}
                 className={'layouts'}
+                useCSSTransforms={true}
                 onLayoutChange={onLayoutChange}
                 onBreakpointChange={onBreakpointChange}>
                 {widgets?.map(item => createWidget(item))}
