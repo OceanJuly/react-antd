@@ -5,7 +5,12 @@ import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import { Button } from "antd";
 import { findIndex } from 'lodash'
 import '../../assets/dashboard.css'
-import { CloseOutlined, LockOutlined, QuestionCircleOutlined, UnlockOutlined } from "@ant-design/icons";
+import {
+    CloseOutlined,
+    LockOutlined,
+    QuestionCircleOutlined,
+    UnlockOutlined
+} from "@ant-design/icons";
 const BarChartWidgetLazy = React.lazy(() => import('./components/BarChartWidget'));
 const PieChartWidgetLazy = React.lazy(() => import('./components/PieChart'));
 const TableWidgetLazy = React.lazy(() => import('./components/tableCom'));
@@ -25,6 +30,7 @@ function DashboardGird() {
     const [currentCols, setCurrentCols] = useState<number>(12);
 
     const getLayouts: any = () => {
+        console.log(widgets.map(item => item.layout))
         return widgets.map(item => item.layout);
     }
 
@@ -106,13 +112,13 @@ function DashboardGird() {
         if (!widgetName) return
         const newWidgets = [...widgets, {
             widgetName: widgetName,
-            layout: { i: widgetName, x: x, y: Infinity, w: 3, h: 2, static: false }
+            layout: { i: widgetName, x: x, y: Infinity, w: 3, h: 2, static: false, isBounded: true }
         }] as DashboardWidgetInfo[];
         setWidgets(newWidgets);
     }
 
     const handleClick = (e: any) => {
-        let widgetName = e.target.id
+        const widgetName: string = e.target.id
         console.log(e.target.id)
         const x = (widgets.length * 3) % (currentCols);
         
@@ -144,12 +150,6 @@ function DashboardGird() {
     return (
         <>
             <Button onClick={onAddWidget}>add widget</Button>
-            {/*<ul onClick={showCompItem}>*/}
-            {/*    <li><Button id="1">折线图</Button></li>*/}
-            {/*    <li><Button id="2">圆饼图</Button></li>*/}
-            {/*    <li><Button id="3">表格</Button></li>*/}
-            {/*    <li><Button id="4">数据</Button></li>*/}
-            {/*</ul>*/}
             <SelectList handleClick={handleClick}></SelectList>
             <ResponsiveReactGridLayout
                 layouts={getLayouts()}
@@ -158,9 +158,6 @@ function DashboardGird() {
                 onBreakpointChange={onBreakpointChange}>
                 {widgets?.map(item => createWidget(item))}
             </ResponsiveReactGridLayout>
-            {/*<div className="item-wrap">*/}
-            {/*    {widgets?.map(item => createWidget(item))}*/}
-            {/*</div>*/}
         </>
     );
 }

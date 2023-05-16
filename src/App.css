@@ -1,4 +1,5 @@
 @import "src/assets/index.css";
+@import "antd/dist/reset.css";
 * {
   padding: 0;
   margin: 0;
