@@ -10,4 +10,13 @@ export default defineConfig({
       '@': join(__dirname, 'src'),
     },
   },
+  server: {
+    proxy: {
+      '/nodered.itealab.net': {
+        target: 'https://nodered.itealab.net',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/nodered.itealab.net/, '')
+      }
+    }
+  }
 })

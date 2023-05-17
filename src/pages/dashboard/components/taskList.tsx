@@ -7,9 +7,8 @@ import { getTaskList } from '@/api/dashboard';
 interface DataType {
   key: string;
   name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  days: number;
+  reason: string;
 }
 
 function resTask(record: DataType) {
@@ -18,47 +17,27 @@ function resTask(record: DataType) {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
+    title: '姓名',
     dataIndex: 'name',
     key: 'name',
     render: (text) => <a>{text}</a>,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: '天数',
+    dataIndex: 'days',
+    key: 'days',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
+    title: '请假原因',
+    dataIndex: 'reason',
+    key: 'reason',
   },
   {
     title: 'Action',
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Button type="text" onClick={() => resTask(record)}>处理</Button>
+        <Button type="link" onClick={() => resTask(record)}>处理</Button>
       </Space>
     ),
   },
@@ -68,23 +47,20 @@ const data: DataType[] = [
   {
     key: '1',
     name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    days: 32,
+    reason: 'New York No. 1 Lake Park'
   },
   {
     key: '2',
     name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    days: 42,
+    reason: 'London No. 1 Lake Park'
   },
   {
     key: '3',
     name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    days: 32,
+    reason: 'Sydney No. 1 Lake Park'
   },
 ];
 
