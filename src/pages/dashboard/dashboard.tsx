@@ -16,6 +16,7 @@ const PieChartWidgetLazy = React.lazy(() => import('./components/PieChart'));
 const TableWidgetLazy = React.lazy(() => import('./components/tableCom'));
 const DataWidgetLazy = React.lazy(() => import('./components/dataCom'));
 const SelectList = React.lazy(() => import('./components/selectList'));
+const TaskList = React.lazy(() => import('./components/taskList'));
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 interface DashboardWidgetInfo {
@@ -164,6 +165,7 @@ function DashboardGird() {
 
     return (
         <>
+            <TaskList></TaskList>
             <Button onClick={onAddWidget}>add widget</Button>
             <Button onClick={saveData}>saveData</Button>
             <Button onClick={clearData}>ClearData</Button>
