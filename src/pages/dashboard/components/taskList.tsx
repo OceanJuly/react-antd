@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Space, Table, Tag, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import '../style/taskList.css'
+import { getTaskList } from '@/api/dashboard';
 
 interface DataType {
   key: string;
@@ -88,6 +89,11 @@ const data: DataType[] = [
 ];
 
 function TaskList () {
+    useEffect(() => {
+      console.log('组件挂载完成');
+      // 这里可以写一些需要在挂载时执行的操作，比如向服务器请求数据等等
+    }, []);
+
     return (
         <>
             <div className="task-list-title">今日代办</div>
