@@ -16,6 +16,11 @@ export default defineConfig({
         target: 'https://nodered.itealab.net',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/nodered.itealab.net/, '')
+      },
+      '/flow.itealab.net': {
+        target: 'https://flow.itealab.net',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/flow.itealab.net/, '')
       }
     }
   }

@@ -12,20 +12,16 @@ const service = axios.create({
 });
 
 //统一请求拦截 可配置自定义headers 例如 language、token等
-// service.interceptors.request.use(
-//   (config: AxiosRequestConfig) => {
-//     配置自定义请求头
-//     let customHeaders: AxiosRequestHeaders = { 
-//       language: 'zh-cn' 
-//     };
-//     config.headers = customHeaders;
-//     return config
-//   },
-//   error => {
-//     console.log(error)
-//     Promise.reject(error)
-//   }
-// )
+service.interceptors.request.use(
+  (config: any) => {
+    console.log(config)
+    return config
+  },
+  error => {
+    console.log(error)
+    Promise.reject(error)
+  }
+)
 
 //axios返回格式
 interface axiosTypes<T>{
@@ -49,6 +45,7 @@ const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: strin
   let response: Promise<axiosTypes<any>>;
   switch(method){
     case 'get':
+      console.log('get', config)
       response = service.get(url, {params: { ...params }, ...config});
       break;
     case 'post':
