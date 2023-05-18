@@ -1,10 +1,18 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { join } from 'path'
-
+import { join, resolve } from 'path';
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+        react(),
+  			//使用 svg 图标
+        createSvgIconsPlugin({
+          iconDirs: [resolve(process.cwd(), "src/assets/icons")],
+          svgoOptions: {},
+          symbolId: "icon-[dir]-[name]"
+        }),
+  ],
   resolve: {
     alias: {
       '@': join(__dirname, 'src'),
@@ -12,10 +20,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/nodered.itealab.net': {
-        target: 'https://nodered.itealab.net',
+      '/api': {
+        target: 'https://nodered.itealab.net/chatgpt',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/nodered.itealab.net/, '')
+                rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }

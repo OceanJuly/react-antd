@@ -67,27 +67,27 @@ const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: strin
       //业务代码 可根据需求自行处理
 
       const data = res.data;
-      if(data.code !== 200){
+      if(res.status !== 200){
         
         //特定状态码 处理特定的需求
         if(data.code == 401){
-          message.warn('您的账号已登出或超时，即将登出...');
+          // message.warn('您的账号已登出或超时，即将登出...');
           console.log('登录异常，执行登出...');
         }
 
         const e = JSON.stringify(data);
-        message.warn(`请求错误：${e}`);
+        // message.warn(`请求错误：${e}`);
         console.log(`请求错误：${e}`)
         //数据请求错误 使用reject将错误返回
         reject(data);
       }else{
         //数据请求正确 使用resolve将结果返回
-        resolve(data.result);
+        resolve(res.data);
       }
 
     }).catch(error => {
       const e = JSON.stringify(error);
-      message.warn(`网络错误：${e}`);
+      // message.warn(`网络错误：${e}`);
       console.log(`网络错误：${e}`)
       reject(error);
     })
