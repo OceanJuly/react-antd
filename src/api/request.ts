@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { message } from 'antd'
 
 //默认请求超时时间
@@ -12,20 +12,16 @@ const service = axios.create({
 });
 
 //统一请求拦截 可配置自定义headers 例如 language、token等
-// service.interceptors.request.use(
-//   (config: AxiosRequestConfig) => {
-//     配置自定义请求头
-//     let customHeaders: AxiosRequestHeaders = { 
-//       language: 'zh-cn' 
-//     };
-//     config.headers = customHeaders;
-//     return config
-//   },
-//   error => {
-//     console.log(error)
-//     Promise.reject(error)
-//   }
-// )
+service.interceptors.request.use(
+  (config: any) => {
+    console.log(config)
+    return config
+  },
+  error => {
+    console.log(error)
+    Promise.reject(error)
+  }
+)
 
 //axios返回格式
 interface axiosTypes<T>{
@@ -45,10 +41,11 @@ interface axiosTypes<T>{
 
 //核心处理代码 将返回一个promise 调用then将可获取响应的业务数据
 const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: string, params: object = {}, config: AxiosRequestConfig = {}): Promise<T> => {
-//   let response: Promise<axiosTypes<responseTypes<T>>>;
+  //   let response: Promise<axiosTypes<responseTypes<T>>>;
   let response: Promise<axiosTypes<any>>;
   switch(method){
     case 'get':
+      console.log('get', config)
       response = service.get(url, {params: { ...params }, ...config});
       break;
     case 'post':
@@ -65,7 +62,6 @@ const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: strin
   return new Promise<T>((resolve, reject) => {
     response.then(res => {
       //业务代码 可根据需求自行处理
-
       const data = res.data;
       if(res.status !== 200){
         
@@ -74,17 +70,14 @@ const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: strin
           // message.warn('您的账号已登出或超时，即将登出...');
           console.log('登录异常，执行登出...');
         }
-
         const e = JSON.stringify(data);
         // message.warn(`请求错误：${e}`);
         console.log(`请求错误：${e}`)
-        //数据请求错误 使用reject将错误返回
         reject(data);
       }else{
         //数据请求正确 使用resolve将结果返回
         resolve(res.data);
       }
-
     }).catch(error => {
       const e = JSON.stringify(error);
       // message.warn(`网络错误：${e}`);
