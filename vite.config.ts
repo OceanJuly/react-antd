@@ -14,8 +14,8 @@ export default defineConfig({
     proxy: {
       '/nodered.itealab.net': {
         target: 'https://nodered.itealab.net',
-                changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/nodered.itealab.net/, '')
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/nodered.itealab.net/, '')
       }
     }
   }

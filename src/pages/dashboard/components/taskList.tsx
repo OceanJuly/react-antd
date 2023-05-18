@@ -2,7 +2,8 @@ import React, {useEffect} from 'react';
 import { Space, Table, Tag, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import '../style/taskList.css'
-import { getTaskList } from '@/api/dashboard';
+import { getSysResource } from '@/api/dashboard';
+import {to} from 'await-to-js'
 
 interface DataType {
   key: string;
@@ -66,8 +67,13 @@ const data: DataType[] = [
 
 function TaskList () {
     useEffect(() => {
-      console.log('组件挂载完成');
       // 这里可以写一些需要在挂载时执行的操作，比如向服务器请求数据等等
+      console.log('组件挂载完成');
+      const fetchData = async () => {
+        const [res, err] = await to(getSysResource())
+        console.log(res, err)
+      }
+      fetchData();
     }, []);
 
     return (
@@ -78,4 +84,4 @@ function TaskList () {
     )
 }
 
-export default TaskList;
+export const WrappedTaskList = React.memo(TaskList);

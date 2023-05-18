@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { message } from 'antd'
 
 //默认请求超时时间
@@ -45,7 +45,7 @@ interface axiosTypes<T>{
 
 //核心处理代码 将返回一个promise 调用then将可获取响应的业务数据
 const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: string, params: object = {}, config: AxiosRequestConfig = {}): Promise<T> => {
-//   let response: Promise<axiosTypes<responseTypes<T>>>;
+  //   let response: Promise<axiosTypes<responseTypes<T>>>;
   let response: Promise<axiosTypes<any>>;
   switch(method){
     case 'get':
@@ -65,29 +65,22 @@ const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: strin
   return new Promise<T>((resolve, reject) => {
     response.then(res => {
       //业务代码 可根据需求自行处理
-
       const data = res.data;
-      if(data.code !== 200){
-        
-        //特定状态码 处理特定的需求
-        if(data.code == 401){
-          message.warn('您的账号已登出或超时，即将登出...');
+      if(res.status !== 200){
+        if(res.status === 401){
+          message.warning('您的账号已登出或超时，即将登出...');
           console.log('登录异常，执行登出...');
         }
-
         const e = JSON.stringify(data);
-        message.warn(`请求错误：${e}`);
+        message.warning(`请求错误：${e}`);
         console.log(`请求错误：${e}`)
-        //数据请求错误 使用reject将错误返回
         reject(data);
-      }else{
-        //数据请求正确 使用resolve将结果返回
-        resolve(data.result);
+      } else {
+        resolve(data);
       }
-
     }).catch(error => {
       const e = JSON.stringify(error);
-      message.warn(`网络错误：${e}`);
+      message.warning(`网络错误：${e}`);
       console.log(`网络错误：${e}`)
       reject(error);
     })
