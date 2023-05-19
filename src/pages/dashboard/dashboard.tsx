@@ -39,7 +39,6 @@ function DashboardGird() {
     const [currentCols, setCurrentCols] = useState<number>(12);
 
     const getLayouts: any = () => {
-        console.log(widgets.map(item => item.layout))
         return widgets.map(item => item.layout);
     }
 
@@ -128,10 +127,7 @@ function DashboardGird() {
 
     const handleClick = (e: any) => {
         const widgetName: string = e.target.id
-        console.log(e.target.id)
         const x = (widgets.length * 3) % (currentCols);
-        
-        console.log(widgetName)
         const newWidgets = [...widgets, {
             widgetName: widgetName,
             layout: { i: widgetName, x: x, y: Infinity, w: 3, h: 2, static: false }
