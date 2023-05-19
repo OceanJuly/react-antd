@@ -1,37 +1,44 @@
-import React, {useEffect} from 'react';
-import { Space, Table, Tag, Button } from 'antd';
+import React, {useEffect, useState} from 'react';
+import { Space, Table, Tag, Button, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import '../style/taskList.css'
-import { getTaskList } from '@/api/dashboard';
+import {
+  getTaskList,
+  completeTask
+} from '@/api/dashboard';
 import {to} from 'await-to-js'
 
 interface DataType {
   key: string;
-  name: string;
-  days: number;
-  reason: string;
+  event: string;
+  formKey: string;
 }
 
-function resTask(record: DataType) {
-    console.log(record)
+async function resTask(record: DataType) {
+  // if (record.formKey) {}
+  const [err, res]: any = await to(completeTask({
+    id: record.key,
+    params: {
+      action: 'complete',
+      variable: []
+    },
+    config: {
+      headers: {
+        Username: 'admin',
+        Password: 'test'
+      }
+    }
+  }))
+  if (res) {
+    message.success('处理成功')
+  }
 }
 
 const columns: ColumnsType<DataType> = [
   {
-    title: '姓名',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: '天数',
-    dataIndex: 'days',
-    key: 'days',
-  },
-  {
-    title: '请假原因',
-    dataIndex: 'reason',
-    key: 'reason',
+    title: '处理项',
+    dataIndex: 'event',
+    key: 'event',
   },
   {
     title: 'Action',
@@ -47,36 +54,32 @@ const columns: ColumnsType<DataType> = [
 const data: DataType[] = [
   {
     key: '1',
-    name: 'John Brown',
-    days: 32,
-    reason: 'New York No. 1 Lake Park'
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    days: 42,
-    reason: 'London No. 1 Lake Park'
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    days: 32,
-    reason: 'Sydney No. 1 Lake Park'
+    event: 'John Brown',
+    formKey: ''
   },
 ];
 
 function TaskList () {
+    const [tableData, setTableData] = useState(data)
     useEffect(() => {
       // 这里可以写一些需要在挂载时执行的操作，比如向服务器请求数据等等
       console.log('组件挂载完成');
       const fetchData = async () => {
-        const [res, err] = await to(getTaskList({
+        const [err, res]: any = await to(getTaskList({
           headers: {
             Username: 'admin',
             Password: 'test'
           }
         }))
-        console.log(res, err)
+        if (res) {
+          setTableData(res.data.map((row: any) => {
+            return {
+              key: row.id,
+              event: row.name,
+              formKey: row.formKey || ''
+            }
+          }))
+        }
       }
       fetchData();
     }, []);
@@ -84,7 +87,7 @@ function TaskList () {
     return (
         <>
             <div className="task-list-title">今日代办</div>
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={tableData} />
         </>
     )
 }

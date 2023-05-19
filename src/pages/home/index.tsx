@@ -8,12 +8,12 @@ import MessageParser from "./MessageParser";
 import config from "./config";
 import ButtonIcon from "../../assets/icons/rebot.svg";
 // import Gist from "react-gist/types";
-interface ButtonProps {
+interface HomeProps {
 	// 定义其他props
 	className?: string;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-const Home: React.FC<ButtonProps> = (_props: any) => {
+const Home: React.FC<HomeProps> = (_props: any) => {
 	const [showChatbot, toggleChatbot] = useState(true);
 	return (
 		<>
