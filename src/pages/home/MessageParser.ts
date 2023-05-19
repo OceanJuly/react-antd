@@ -30,7 +30,7 @@ class MessageParser {
 			return this.actionProvider.handleWidgetDocs();
 		}
 
-		return this.actionProvider.handleDefault(message);
+		return this.actionProvider.handleDefault(message,'myRoom');
 	};
 }
 

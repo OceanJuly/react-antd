@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
 import { ConditionallyRender } from "react-util-kit";
 
-import GistContainer from "../../GistContainer/GistContainer";
-
 import styles from "./Config.module.css";
 
 type Props = {
 	gist: any;
 	setState: (state: any) => void;
 };
-// eslint-disable-next-line react/prop-types
 const Config = ({ gist, setState }: Props) => {
 	useEffect(() => {
 		setState((state: any) => ({ ...state, gist: "config" }));
@@ -27,7 +24,7 @@ const Config = ({ gist, setState }: Props) => {
 			>
 				View example
 			</a>
-			<ConditionallyRender ifTrue={showActionProviderGist} show={<GistContainer gistId="af04e2e30407671412af08fa3c429409" />} />
+			<ConditionallyRender ifTrue={showActionProviderGist} />
 		</div>
 	);
 };

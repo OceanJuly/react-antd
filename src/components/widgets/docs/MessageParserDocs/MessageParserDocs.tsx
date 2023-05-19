@@ -10,7 +10,6 @@ type Props = {
 	infoBox: any;
 	setState: (state: any) => void;
 };
-// eslint-disable-next-line react/prop-types
 const MessageParserDocs = ({ infoBox, setState }: Props) => {
 	useEffect(() => {
 		setState((state: any) => ({

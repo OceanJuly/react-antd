@@ -46,9 +46,11 @@ class ActionProvider {
 		this.addMessageToBotState(messages);
 	};
 
-	handleDefault = (msg:string) => {
+	handleDefault = (msg:string,room:string) => {
 		const socket = io('http://localhost:4000')
-		socket.emit(msg)
+		socket.emit('message',msg,room)
+		console.log(room);
+		
 		socket.on('connect',() => {
 			console.log(socket.id);
 		})
@@ -68,7 +70,7 @@ class ActionProvider {
 
 						{
 							role: "system",
-							content: "你是一个资深测试专家，帮助我们回答用户的问题，请按照JSON的格式输出，仅输出JSON，不需要其他内容"
+							content: "你是一个资深测试专家，帮助回答用户的问题，请按照JSON的格式输出，仅输出JSON，不需要其他内容"
 						}
 					],
 					max_tokens: 1000,

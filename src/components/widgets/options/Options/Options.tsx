@@ -2,9 +2,7 @@ import React from "react";
 
 import styles from "./Options.module.css";
 
-// eslint-disable-next-line react/prop-types
 const Options = (options: any) => {
-	// eslint-disable-next-line react/prop-types
 	// console.log(options.options);
 	const markup = options.options.map(
 		(option: {

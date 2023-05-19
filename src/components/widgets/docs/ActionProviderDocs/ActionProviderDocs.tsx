@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { FadeIn } from "react-anim-kit";
 import { ConditionallyRender } from "react-util-kit";
-import Gist from "react-gist";
 
 // import ActionProviderOverview from "../../../../../assets/img/actionprovider-overview.svg";
 
@@ -13,7 +12,6 @@ type Props = {
 	setState: (state: any) => void;
 };
 
-// eslint-disable-next-line react/prop-types, @typescript-eslint/no-unused-vars
 const ActionProviderDocs = ({ infoBox, setState }: Props) => {
 	useEffect(() => {
 		setState((state: any) => ({
@@ -42,7 +40,6 @@ const ActionProviderDocs = ({ infoBox, setState }: Props) => {
 						<p className={styles.infoBoxParagraph}>
 							The bots response is controlled by the createChatBotMessage function that is given to the actionprovider:
 						</p>
-						<Gist id={"2f0855a6fe8908bddc9f03db31d5caa4"} />
 					</InformationBox>
 				}
 			/>
