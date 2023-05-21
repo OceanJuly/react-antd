@@ -34,7 +34,7 @@ export const routes: RouteObject[] = [
         ]
     },
     {
-        path: '/form',
+        path: '/form/:id',
         element: <SchemaForm></SchemaForm>
     }
 ]

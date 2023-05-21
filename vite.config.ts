@@ -5,13 +5,13 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-        react(),
-  			//使用 svg 图标
-        createSvgIconsPlugin({
-          iconDirs: [resolve(process.cwd(), "src/assets/icons")],
-          svgoOptions: {},
-          symbolId: "icon-[dir]-[name]"
-        }),
+    react(),
+    // 使用 svg 图标
+    createSvgIconsPlugin({
+      iconDirs: [resolve(process.cwd(), "src/assets/icons")],
+      svgoOptions: {},
+      symbolId: "icon-[dir]-[name]"
+    }),
   ],
   resolve: {
     alias: {
