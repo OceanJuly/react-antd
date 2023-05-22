@@ -2,7 +2,7 @@ import react, {useState} from 'react';
 import { RJSFSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
 import Form from '@rjsf/antd'
-import './schemaForm.css'
+import '@/pages/process/style/schemaForm.css'
 import { completeFormTask } from '@/api/dashboard';
 import { useParams } from "react-router-dom"
 interface SchemaFormProps {

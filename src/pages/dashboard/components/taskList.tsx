@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { Space, Table, Tag, Button, message } from 'antd';
+import { Space, Table, Button, message, Radio } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import '../style/taskList.css'
 import { useNavigate } from 'react-router-dom'
 import {
   getTaskList,
-  completeTask
+  completeTask,
+  getHistoryTask
 } from '@/api/dashboard';
 import {to} from 'await-to-js'
 
@@ -14,11 +15,6 @@ interface DataType {
   event: string;
   formKey: string;
 }
-
-// interface MyRouteParams {
-//   id: string;
-//   [key: string]: string | undefined;
-// }
 
 const data: DataType[] = [
   {
@@ -29,8 +25,8 @@ const data: DataType[] = [
 ];
 
 function TaskList () {
+  const [taskType, setTaskType] = useState<string>('nowTask');
   const navigate = useNavigate()
-    // const { id } = useParams<MyRouteParams>();
     const [tableData, setTableData] = useState(data)
     const columns: ColumnsType<DataType> = [
       {
@@ -49,12 +45,8 @@ function TaskList () {
       },
     ];
     async function resTask(record: DataType) {
-      console.log(record.formKey)
-      navigate(`/form/${record.key}`);
-      return
-      if (record.formKey) {
-        navigate('/form');
-      }
+      // 如果有表单，需要跳转到表单页面填写
+      if (record.formKey) return navigate(`/process/${record.key}`);
       const [err, res]: any = await to(completeTask({
         id: record.key,
         params: {
@@ -68,14 +60,12 @@ function TaskList () {
           }
         }
       }))
-      if (res) {
-        message.success('处理成功')
-      }
+      if (!err) message.success('处理成功')
     }
     useEffect(() => {
       // 这里可以写一些需要在挂载时执行的操作，比如向服务器请求数据等等
       console.log('组件挂载完成');
-      const fetchData = async () => {
+      const fetchTaskList = async () => {
         const [err, res]: any = await to(getTaskList({
           headers: {
             Username: 'admin',
@@ -92,12 +82,37 @@ function TaskList () {
           }))
         }
       }
-      fetchData();
-    }, []);
+      const fetchHistoryTasks = async () => {
+        const [err, res]: any = await to(getHistoryTask({
+          headers: {
+            Username: 'admin',
+            Password: 'test'
+          }
+        }))
+        if (res) {
+          setTableData(res.data.map((row: any) => {
+            return {
+              key: row.id,
+              event: row.name,
+              formKey: row.formKey || ''
+            }
+          }))
+        }
+      }
+      if (taskType === 'historyTask') fetchHistoryTasks()
+      else fetchTaskList();
+    }, [taskType]);
+
+    function changeTaskList(val: string) {
+      setTaskType(val)
+    }
 
     return (
         <>
-            <div className="task-list-title">今日代办</div>
+            <Radio.Group value={taskType} onChange={(e) => changeTaskList(e.target.value)}>
+              <Radio.Button value="nowTask">今日代办</Radio.Button>
+              <Radio.Button value="historyTask">历史记录</Radio.Button>
+            </Radio.Group>
             <Table columns={columns} dataSource={tableData} />
         </>
     )
