@@ -95,6 +95,7 @@ const [unreadMessages] = useState(1);
       //     <Chatbot config={config} messageParser={MessageParser} actionProvider={ActionProvider} />,
       //   );
       // } ,2000)
+      
       setShowChatBot(true);
     }
     setSelectedUser(user);
@@ -210,14 +211,15 @@ const [unreadMessages] = useState(1);
               <p>Please select a user to start chatting</p>
             )}
           </div>
-        </div>
-        {
+          {
           showChatBot && (
-            <div>
+            <div className='chatbot-container'>
               <Chatbot config={config} messageParser={MessageParser} actionProvider={ActionProvider} />,
             </div>
           )
         }
+        </div>
+       
       </div>
     </>
   );
