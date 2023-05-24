@@ -5,6 +5,7 @@ import AppLayout from '@/components/appLayout'
 const Dashboard = lazy(() => import("@/pages/dashboard/dashboard"))
 const Home = lazy(() => import("@/pages/home/index"))
 const Process = lazy(() => import("@/pages/process/index"))
+const Login = lazy(() => import("@/pages/login"))
 // 实现懒加载的用Suspense包裹 定义函数
 const lazyLoad = (children: ReactNode): ReactNode =>{
     return <Suspense fallback={<h1>Loading...</h1>}>
@@ -36,5 +37,9 @@ export const routes: RouteObject[] = [
     {
         path: '/process/:id',
         element: <Process></Process>
+    },
+    {
+        path: 'login',
+        element: <Login></Login>
     }
 ]
