@@ -13,6 +13,17 @@ export default defineConfig({
       symbolId: "icon-[dir]-[name]"
     }),
   ],
+  css: {
+    // 预处理配置
+    preprocessorOptions: {
+      less: {
+        math: 'always',
+        globalVars: {
+          // 全局变量配置
+        }
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': join(__dirname, 'src'),

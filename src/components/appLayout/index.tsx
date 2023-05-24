@@ -10,7 +10,8 @@ import {
 import { Link, matchRoutes, Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { routes as routers } from '@/router';
-import './appLayout.css'
+import LayoutHeader from './components/layoutHeader';
+import './style/appLayout.css'
 
 import SubMenu from 'antd/es/menu/SubMenu';
 const { Header, Content, Sider } = Layout;
@@ -106,7 +107,9 @@ export default function AppLayout() {
             </Menu>
           </Sider>
         <Layout>
-          <Header className="header" style={{ padding: 0, background: colorBgContainer }}></Header>
+          <Header className="header" style={{ padding: 0, background: colorBgContainer }}>
+            <LayoutHeader></LayoutHeader>
+          </Header>
           <Layout style={{ padding: '0 24px 24px' }}>
             <Breadcrumb style={{ margin: '16px 0' }} items={[
               {

@@ -8,7 +8,9 @@ import {
   completeTask,
   getHistoryTask
 } from '@/api/dashboard';
+import { connect } from "react-redux";
 import {to} from 'await-to-js'
+import { Props } from 'react-rnd';
 
 interface DataType {
   key: string;
@@ -24,7 +26,7 @@ const data: DataType[] = [
   },
 ];
 
-function TaskList () {
+function TaskList (props: Props) {
   const [taskType, setTaskType] = useState<string>('nowTask');
   const navigate = useNavigate()
     const [tableData, setTableData] = useState(data)
@@ -80,6 +82,7 @@ function TaskList () {
               formKey: row.formKey || ''
             }
           }))
+          props.updateTodoList(tableData)
         }
       }
       const fetchHistoryTasks = async () => {
@@ -118,4 +121,24 @@ function TaskList () {
     )
 }
 
-export const WrappedTaskList = React.memo(TaskList);
+const mapStateToProps = (state: any) => {
+  return {
+    todoList: state.todoList
+  }
+}
+// 发送dispatch，修改state 数据
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    updateTodoList: () => {
+      const action: any = {
+        type: 'updateTodoList',
+        value: [
+          { key: 123 }
+        ]
+      }
+      dispatch(action)
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList)

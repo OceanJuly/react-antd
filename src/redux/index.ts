@@ -4,10 +4,11 @@ import { applyMiddleware } from "redux";
 import storage from "redux-persist/lib/storage";
 import reduxThunk from "redux-thunk";
 import reduxPromise from "redux-promise";
+import reducer from "./reducer";
 
 // 创建reducer(拆分reducer)
-const reducer = combineReducers({
-
+const reducer1 = combineReducers({
+	reducer
 });
 
 // redux 持久化配置
@@ -15,7 +16,7 @@ const persistConfig = {
 	key: "redux-state",
 	storage: storage
 };
-const persistReducerConfig = persistReducer(persistConfig, reducer);
+const persistReducerConfig = persistReducer(persistConfig, reducer1);
 
 // 开启 redux-devtools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
