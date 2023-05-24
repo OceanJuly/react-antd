@@ -1,7 +1,9 @@
 import { FocusEvent } from "react"
 import './style/index.less'
+import { useNavigate } from "react-router-dom"
 
 function Login() {
+    const navigate = useNavigate()
     function handleFocus(e: FocusEvent) {
         const tar: EventTarget & Element = e.target
         if (!tar) return
@@ -11,6 +13,9 @@ function Login() {
         const tar: EventTarget & Element = e.target
         if (!tar) return
         tar.classList.remove('focus-style')
+    }
+    function login() {
+        navigate('/dashboard')
     }
     return (
         <div className="login-wrap">
@@ -24,7 +29,7 @@ function Login() {
                     <span data-placeholder="password"></span>
                 </div>
                 <div className="login-button-wrap">
-                    <button className="login-button">登录</button>
+                    <button className="login-button" onClick={login}>登录</button>
                 </div>
             </div>
         </div>
