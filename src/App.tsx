@@ -15,7 +15,7 @@ import {routes} from '@/router'
 import { RouterInterface } from './router/router';
 import SubMenu from 'antd/es/menu/SubMenu';
 import { BrowserRouter as Router, Route, Link, Redirect, useRoutes } from 'react-router-dom';
-
+import Home from "./pages/home/index"
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -110,7 +110,13 @@ const App: React.FC = () => {
     //         </Layout>
     //     </Layout>
     // );
-    return useRoutes(routes)
+    const element = useRoutes(routes)
+    return (
+        <div>
+            <Home></Home>
+            {element}
+        </div>
+    )
 };
 
 export default App;
