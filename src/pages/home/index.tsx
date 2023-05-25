@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { Button, Input, List } from 'antd';
+import { Badge, Button, Input, List } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import './chatRoom.css';
 import ButtonIcon from "../../assets/icons/rebot.svg";
@@ -14,6 +14,7 @@ import { createRoot } from 'react-dom/client';
 interface User {
   id: string;
   name: string;
+  unreadMessages:number
 }
 
 interface Message {
@@ -24,12 +25,20 @@ interface Message {
 
 const ChatRoom: React.FC = () => {
   const [showChat, setShowChat] = useState(false);
-  const [users, setUsers] = useState<User[]>([{ id: '111', name: '小红' }, { id: '222', name: '小名' }, { id: '333', name: '小羊' }, { id: '444', name: "chatbot" }]);
+  const [showChatBot, setShowChatBot] = useState(false)
+  const [users, setUsers] = useState<User[]>([
+    { id: '111', name: '小红', unreadMessages: 1 },
+  { id: '222', name: '小名', unreadMessages: 0 },
+  { id: '333', name: '小羊', unreadMessages: 3 },
+  { id: '444', name: "chatbot", unreadMessages: 0 }
+  ]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [socket, setSocket] = useState<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  // 在组件中添加一个状态来记录未读信息数量
+const [unreadMessages] = useState(1);
 
   useEffect(() => {
     // Connect to the server
@@ -39,6 +48,25 @@ const ChatRoom: React.FC = () => {
     // Listen for incoming messages
     socket.on('message', (message: Message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
+      if (selectedUser && message.sender !== 'Me' && message.sender === selectedUser.name) {
+        const updatedUsers = users.map((user) => {
+          if (user.name === selectedUser.name) {
+            return { ...user, unreadMessages: user.unreadMessages + 1 };
+          } else {
+            return user;
+          }
+        });
+        setUsers(updatedUsers);
+      } else {
+        const updatedUsers = users.map((user) => {
+          if (user.name === message.sender) {
+            return { ...user, unreadMessages: user.unreadMessages + 1 };
+          } else {
+            return user;
+          }
+        });
+        setUsers(updatedUsers);
+      }
     });
 
     // Listen for incoming users
@@ -61,15 +89,27 @@ const ChatRoom: React.FC = () => {
 
   const handleUserSelect = (user: User) => {
     if (user.name == 'chatbot') {
-      setTimeout(() => {
-        const chatbotContainer = document.getElementsByClassName('chat-messages')[0];      
-        createRoot(chatbotContainer).render(
-          <Chatbot config={config} messageParser={MessageParser} actionProvider={ActionProvider} />,
-        );
-      } ,2000)
+      // setTimeout(() => {
+      //   const chatbotContainer = document.getElementsByClassName('chat-window-main')[0];      
+      //   createRoot(chatbotContainer).render(
+      //     <Chatbot config={config} messageParser={MessageParser} actionProvider={ActionProvider} />,
+      //   );
+      // } ,2000)
+      
+      setShowChatBot(true);
     }
     setSelectedUser(user);
     setMessages([]);
+    const updatedUsers = users.map(u => {
+      console.log(u,user);
+      
+      if (u.name === user.name) {
+        return { ...u, unreadMessages: 0 };
+      } else {
+        return u;
+      }
+    });
+    setUsers(updatedUsers);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -95,7 +135,9 @@ const ChatRoom: React.FC = () => {
       <button
         className="app-chatbot-button"
         onClick={() => setShowChat(!showChat)}>
+          <Badge count={unreadMessages}>
         <img src={ButtonIcon} className="app-chatbot-button-icon" />
+        </Badge>
       </button>
 
       <div className={`chat-window ${showChat ? 'visible' : ''}`}>
@@ -110,12 +152,14 @@ const ChatRoom: React.FC = () => {
               renderItem={(user) => (
                 <List.Item
                   actions={[
+                    <Badge count={user.unreadMessages}>
                     <Button
                       type="link"
                       onClick={() => handleUserSelect(user)}
                     >
                       Chat
-                    </Button>,
+                    </Button>
+                    </Badge>,
                   ]}
                 >
                   <List.Item.Meta
@@ -167,7 +211,15 @@ const ChatRoom: React.FC = () => {
               <p>Please select a user to start chatting</p>
             )}
           </div>
+          {
+          showChatBot && (
+            <div className='chatbot-container'>
+              <Chatbot config={config} messageParser={MessageParser} actionProvider={ActionProvider} />,
+            </div>
+          )
+        }
         </div>
+       
       </div>
     </>
   );

@@ -8,7 +8,8 @@ class MessageParser {
 
 	parse = (message: string) => {
 		const lowerCase = message.toLowerCase();
-
+			console.log(lowerCase);
+			
 		if (
 			lowerCase.includes("messageparser") ||
 			lowerCase.includes("parse") ||
