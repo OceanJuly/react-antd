@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { Space, Table, Button, message, Radio } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import '../style/taskList.css'
@@ -8,9 +8,9 @@ import {
   completeTask,
   getHistoryTask
 } from '@/api/dashboard';
-import { connect } from "react-redux";
 import {to} from 'await-to-js'
-import { Props } from 'react-rnd';
+// import store from '@/store/todoStore';
+// import { Observer } from 'mobx-react-lite'
 
 interface DataType {
   key: string;
@@ -18,18 +18,9 @@ interface DataType {
   formKey: string;
 }
 
-const data: DataType[] = [
-  {
-    key: '1',
-    event: 'John Brown',
-    formKey: ''
-  },
-];
-
-function TaskList (props: Props) {
+function TaskList () {
   const [taskType, setTaskType] = useState<string>('nowTask');
   const navigate = useNavigate()
-    const [tableData, setTableData] = useState(data)
     const columns: ColumnsType<DataType> = [
       {
         title: '处理项',
@@ -65,8 +56,6 @@ function TaskList (props: Props) {
       if (!err) message.success('处理成功')
     }
     useEffect(() => {
-      // 这里可以写一些需要在挂载时执行的操作，比如向服务器请求数据等等
-      console.log('组件挂载完成');
       const fetchTaskList = async () => {
         const [err, res]: any = await to(getTaskList({
           headers: {
@@ -75,14 +64,14 @@ function TaskList (props: Props) {
           }
         }))
         if (res) {
-          setTableData(res.data.map((row: any) => {
+          const arr: any = res.data.map((row: any) => {
             return {
               key: row.id,
               event: row.name,
               formKey: row.formKey || ''
             }
-          }))
-          props.updateTodoList(tableData)
+          })
+          // todoListStore.updateTodoList(arr)
         }
       }
       const fetchHistoryTasks = async () => {
@@ -93,13 +82,14 @@ function TaskList (props: Props) {
           }
         }))
         if (res) {
-          setTableData(res.data.map((row: any) => {
+          const arr: any = res.data.map((row: any) => {
             return {
               key: row.id,
               event: row.name,
               formKey: row.formKey || ''
             }
-          }))
+          })
+          // todoListStore.updateTodoList(arr)
         }
       }
       if (taskType === 'historyTask') fetchHistoryTasks()
@@ -116,29 +106,9 @@ function TaskList (props: Props) {
               <Radio.Button value="nowTask">今日代办</Radio.Button>
               <Radio.Button value="historyTask">历史记录</Radio.Button>
             </Radio.Group>
-            <Table columns={columns} dataSource={tableData} />
+            <Table columns={columns} dataSource={[]} />
         </>
     )
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-    todoList: state.todoList
-  }
-}
-// 发送dispatch，修改state 数据
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    updateTodoList: () => {
-      const action: any = {
-        type: 'updateTodoList',
-        value: [
-          { key: 123 }
-        ]
-      }
-      dispatch(action)
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(TaskList)
+export default TaskList

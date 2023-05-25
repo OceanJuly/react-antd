@@ -45,6 +45,11 @@ export default defineConfig({
         target: 'https://flow.itealab.net',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/flow.itealab.net/, '')
+      },
+      '/tid.itealab.net': {
+        target: 'https://tid.itealab.net',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/tid.itealab.net/, '')
       }
     }
   }

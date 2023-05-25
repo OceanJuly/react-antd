@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb, theme, MenuProps } from 'antd';
+import { Layout, Menu, Breadcrumb, theme, MenuProps, MenuRef } from 'antd';
 import {
   UserOutlined,
   PieChartOutlined,
@@ -8,12 +8,12 @@ import {
   LaptopOutlined
 } from '@ant-design/icons';
 import { Link, matchRoutes, Outlet, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { RefAttributes, useEffect, useState } from 'react';
 import { routes as routers } from '@/router';
 import LayoutHeader from './components/layoutHeader';
 import './style/appLayout.css'
+import { useNavigate } from 'react-router-dom'
 
-import SubMenu from 'antd/es/menu/SubMenu';
 const { Header, Content, Sider } = Layout;
 
 
@@ -33,6 +33,7 @@ function getItem(
 }
 
 export default function AppLayout() {
+  const navigate = useNavigate()
   const location = useLocation();
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([]);
   const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>([]);
@@ -43,8 +44,8 @@ export default function AppLayout() {
   } = theme.useToken();
 
   const getItemList = [
-      getItem('DashBoard', 'home', <PieChartOutlined />),
-      getItem('Option 2', '2', <DesktopOutlined />),
+      getItem('DashBoard', '/dashboard', <PieChartOutlined />),
+      getItem('Logs', '/logs', <DesktopOutlined />),
       getItem('User', 'sub1', <UserOutlined />, [
           getItem('Tom', '3'),
           getItem('Bill', '4'),
@@ -73,6 +74,11 @@ export default function AppLayout() {
     return null;
   }
 
+  function go2Page(e: MenuProps & RefAttributes<MenuRef>) {
+    const path: any = e.key || ''
+    navigate(path)
+  }
+
   return (
     <>
       <Layout style={{ minHeight: '100vh', position: 'relative'}}>
@@ -89,21 +95,8 @@ export default function AppLayout() {
               defaultOpenKeys={defaultOpenKeys}
               style={{ height: '100%', borderRight: 0 }}
               items={getItemList}
+              onClick={go2Page}
             >
-              {/* <SubMenu key="/user" icon={<UserOutlined />} title="用户管理">
-                <Menu.Item key="/user/list">
-                  <Link to='/user/list'>用户信息</Link>
-                </Menu.Item>
-                <Menu.Item key="2">option2</Menu.Item>
-                <Menu.Item key="3">option3</Menu.Item>
-                <Menu.Item key="4">option4</Menu.Item>
-              </SubMenu>
-              <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                <Menu.Item key="5">option5</Menu.Item>
-                <Menu.Item key="6">option6</Menu.Item>
-                <Menu.Item key="7">option7</Menu.Item>
-                <Menu.Item key="8">option8</Menu.Item>
-              </SubMenu> */}
             </Menu>
           </Sider>
         <Layout>
