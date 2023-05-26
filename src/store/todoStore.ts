@@ -49,7 +49,11 @@ interface StoreProps {
 
 const store: StoreProps = makeAutoObservable<StoreProps>({
     data: {
-        todoList: []
+        todoList: [
+            {
+                id: '123'
+            }
+        ]
     },
     updateTodoList: (val: Array<any>) => (store.data.todoList = val)// action
 })

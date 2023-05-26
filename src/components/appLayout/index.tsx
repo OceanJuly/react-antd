@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb, theme, MenuProps, MenuRef } from 'antd';
+import { Layout, Menu, theme, MenuProps, MenuRef } from 'antd';
 import {
   UserOutlined,
   PieChartOutlined,
@@ -81,7 +81,7 @@ export default function AppLayout() {
 
   return (
     <>
-      <Layout style={{ minHeight: '100vh', position: 'relative'}}>
+      <Layout style={{ height: 'calc(100vh - 60px)', position: 'relative'}}>
         <Sider
             className="site-layout-sider"
             collapsible collapsed={collapsed}
@@ -98,33 +98,21 @@ export default function AppLayout() {
               onClick={go2Page}
             >
             </Menu>
-          </Sider>
-        <Layout>
-          <Header className="header" style={{ padding: 0, background: colorBgContainer }}>
+        </Sider>
+        <Layout style={{ display: 'flex' }}>
+          <Header className="header" style={{ padding: 0, background: colorBgContainer, height: '60px' }}>
             <LayoutHeader></LayoutHeader>
           </Header>
-          <Layout style={{ padding: '0 24px 24px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }} items={[
-              {
-                title: 'Home'
-              }, {
-                title: 'List',
-              }, {
-                title: 'App'
-              }
-            ]}>
-            </Breadcrumb>
-            <Content
+          <Content
               className="site-layout-background"
               style={{
                 padding: 24,
                 margin: 0,
-                minHeight: 280,
+                flex: 1
               }}
             >
               <Outlet />
             </Content>
-          </Layout>
         </Layout>
       </Layout>
     </>

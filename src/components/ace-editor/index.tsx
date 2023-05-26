@@ -14,7 +14,7 @@ function AceEditorCom(props: Props) {
                 mode={props.mode}
                 theme="eclipse"
                 name="app_code_editor"
-                fontSize={14}
+                fontSize={16}
                 showPrintMargin
                 showGutter
                 readOnly={props.readOnly || true}

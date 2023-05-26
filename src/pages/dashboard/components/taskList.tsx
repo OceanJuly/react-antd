@@ -102,11 +102,16 @@ function TaskList () {
 
     return (
         <>
+        {/* {
+          store.data.todoList.map((todoList: any) => {
+            return <div className='aaa'>{todoList.id}</div>
+          })
+        } */}
             <Radio.Group value={taskType} onChange={(e) => changeTaskList(e.target.value)}>
               <Radio.Button value="nowTask">今日代办</Radio.Button>
               <Radio.Button value="historyTask">历史记录</Radio.Button>
             </Radio.Group>
-            <Table columns={columns} dataSource={[]} />
+            <Table rowKey="key" columns={columns} dataSource={[]} />
         </>
     )
 }
