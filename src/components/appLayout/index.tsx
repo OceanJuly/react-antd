@@ -81,25 +81,36 @@ export default function AppLayout() {
 
   return (
     <>
-      <Layout style={{ height: 'calc(100vh - 60px)', position: 'relative'}}>
+      <Layout
+        className="app-layout"
+        style={{ height: '100vh', position: 'relative'}}>
         <Sider
             className="site-layout-sider"
-            collapsible collapsed={collapsed}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              height: '100vh',
+              overflow: 'hide'
+            }}
+            collapsible
+            collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}>
               <div className="logo" style={{ height: 32, margin: 16, background: '#CCC' }}>MBT</div>
-            <Menu
-              mode="inline"
-              theme="dark"
-              // 根据url地址实现选中高亮
-              defaultSelectedKeys={defaultSelectedKeys}   
-              defaultOpenKeys={defaultOpenKeys}
-              style={{ height: '100%', borderRight: 0 }}
-              items={getItemList}
-              onClick={go2Page}
-            >
-            </Menu>
+              <Menu
+                mode="inline"
+                theme="dark"
+                // 根据url地址实现选中高亮
+                defaultSelectedKeys={defaultSelectedKeys}   
+                defaultOpenKeys={defaultOpenKeys}
+                style={{ height: '100%', borderRight: 0 }}
+                items={getItemList}
+                onClick={go2Page}
+              >
+              </Menu>
         </Sider>
-        <Layout style={{ display: 'flex' }}>
+        <Layout style={{ display: 'flex', marginLeft: '200px' }}>
           <Header className="header" style={{ padding: 0, background: colorBgContainer, height: '60px' }}>
             <LayoutHeader></LayoutHeader>
           </Header>
