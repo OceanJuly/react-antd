@@ -4,7 +4,7 @@ import 'react-resizable/css/styles.css'
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import { Button } from "antd";
 import { findIndex } from 'lodash'
-import '../../assets/dashboard.css'
+import '../../assets/style/dashboard.css'
 import {
     CloseOutlined,
     LockOutlined,
