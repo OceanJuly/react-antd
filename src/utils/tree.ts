@@ -2,9 +2,9 @@
 export function path2tree(strArr: Array<string>) {
     const res: any = []
     strArr.forEach((str: string) => {
-        const nodeArray = str.startsWith('/')
-            ? str.split('/').slice(1, str.length)
-            : str.split('/')
+        const nodeArray = str.startsWith('$$')
+            ? str.split('$$').slice(1, str.length)
+            : str.split('$$')
         let children = res
         // 循环构建子节点
         for (const i of nodeArray) {
