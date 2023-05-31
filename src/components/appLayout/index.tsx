@@ -119,7 +119,8 @@ export default function AppLayout() {
               style={{
                 padding: 24,
                 margin: 0,
-                flex: 1
+                flex: 1,
+                overflow: 'hidden',
               }}
             >
               <Outlet />
