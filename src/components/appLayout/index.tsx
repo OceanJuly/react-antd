@@ -39,20 +39,17 @@ export default function AppLayout() {
   const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>([]);
   const [isInit, setIsInit] = useState<boolean>(false)
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
 
   const getItemList = [
-      getItem('DashBoard', '/dashboard', <PieChartOutlined />),
-      getItem('Logs', '/logs', <DesktopOutlined />),
-      getItem('User', 'sub1', <UserOutlined />, [
-          getItem('Tom', '3'),
-          getItem('Bill', '4'),
-          getItem('Alex', '5'),
-      ]),
-      getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-      getItem('Files', '9', <FileOutlined />),
+    getItem('DashBoard', '/dashboard', <PieChartOutlined />),
+    getItem('Logs', '/logs', <DesktopOutlined />),
+    getItem('testCase', '/testcase', <UserOutlined />, [
+        getItem('ITEL IDE', '/testcase/ide'),
+        getItem('Bill', '4'),
+        getItem('Alex', '5'),
+    ]),
+    getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+    getItem('Files', '9', <FileOutlined />),
   ]
 
   useEffect(() => {
@@ -85,33 +82,34 @@ export default function AppLayout() {
         className="app-layout"
         style={{ height: '100vh', position: 'relative'}}>
         <Sider
-            className="site-layout-sider"
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              height: '100vh',
-              overflow: 'hide'
-            }}
-            collapsible
-            collapsed={collapsed}
-            onCollapse={(value) => setCollapsed(value)}>
-              <div className="logo" style={{ height: 32, margin: 16, background: '#CCC' }}>MBT</div>
-              <Menu
-                mode="inline"
-                theme="dark"
-                // 根据url地址实现选中高亮
-                defaultSelectedKeys={defaultSelectedKeys}   
-                defaultOpenKeys={defaultOpenKeys}
-                style={{ height: '100%', borderRight: 0 }}
-                items={getItemList}
-                onClick={go2Page}
-              >
-              </Menu>
+          className="site-layout-sider"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            height: '100vh',
+            overflow: 'hide'
+          }}
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}>
+            <div className="logo" style={{ height: 32, margin: 16, background: '#fff' }}>MBT</div>
+            <Menu
+              mode="inline"
+              theme="light"
+              // 根据url地址实现选中高亮
+              defaultSelectedKeys={defaultSelectedKeys}   
+              defaultOpenKeys={defaultOpenKeys}
+              style={{ height: '100%', borderRight: 0 }}
+              items={getItemList}
+              onClick={go2Page}
+            >
+            </Menu>
         </Sider>
         <Layout style={{ display: 'flex', marginLeft: '200px' }}>
-          <Header className="header" style={{ padding: 0, background: colorBgContainer, height: '60px' }}>
+          <Header className="header" style={{ padding: 0, background: '#fff', height: '60px' }}>
             <LayoutHeader></LayoutHeader>
           </Header>
           <Content
@@ -122,9 +120,9 @@ export default function AppLayout() {
                 flex: 1,
                 overflow: 'hidden',
               }}
-            >
-              <Outlet />
-            </Content>
+          >
+            <Outlet />
+          </Content>
         </Layout>
       </Layout>
     </>

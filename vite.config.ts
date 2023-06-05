@@ -22,6 +22,10 @@ export default defineConfig({
         // globalVars: {
           // 全局变量配置
         // },
+        // 覆盖依赖命名的 css 变量
+        modifyVars: {
+
+        },
         additionalData: `@import "${path.resolve(__dirname, "./src/assets/style/variable.less")}";`
       }
     }

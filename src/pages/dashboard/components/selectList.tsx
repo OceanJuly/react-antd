@@ -1,30 +1,20 @@
 import React from 'react';
 import { List, Typography } from 'antd';
 import '../style/selectList.css'
+import { useStore } from '@/store'
+import { observer } from 'mobx-react-lite'
 
-const data = [
-    '折线图',
-    '圆饼图',
-    '表格',
-    '数据'
-];
-
-const obj: any = {
-    '折线图': 'BarChartWidget',
-    '圆饼图': 'PieChartWidget',
-    '表格': 'table',
-    '数据': 'data'
-}
 
 function SelectionList(props: any){
+    const { dashboardWidget } = useStore()
     return (
         <>
             <List
                 bordered
-                dataSource={data}
+                dataSource={dashboardWidget.widgetList}
                 renderItem={(item) => (
-                    <List.Item onClick={props.handleClick} id={obj[item]}>
-                        <Typography.Text mark></Typography.Text> {item}
+                    <List.Item onClick={props.handleClick} id={item.widgetName}>
+                        <Typography.Text mark></Typography.Text> {item.title}
                     </List.Item>
                 )}
             />
@@ -32,4 +22,4 @@ function SelectionList(props: any){
     )
 }
 
-export default SelectionList;
+export default observer(SelectionList)

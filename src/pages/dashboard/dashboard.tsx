@@ -4,20 +4,21 @@ import 'react-resizable/css/styles.css'
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import { Button } from "antd";
 import { findIndex } from 'lodash'
-import '../../assets/style/dashboard.css'
+import './dashboard.less'
 import {
     CloseOutlined,
     LockOutlined,
     QuestionCircleOutlined,
     UnlockOutlined
 } from "@ant-design/icons";
+import { LStorage } from "@/utils/storage";
+import ToolTipBtn from "@/components/basic/toolTip-btn";
 const BarChartWidgetLazy = React.lazy(() => import('./components/BarChartWidget'));
 const PieChartWidgetLazy = React.lazy(() => import('./components/PieChart'));
-const TableWidgetLazy = React.lazy(() => import('./components/tableCom'));
-const DataWidgetLazy = React.lazy(() => import('./components/dataCom'));
-const SelectList = React.lazy(() => import('./components/selectList'));
+const WidgetList = React.lazy(() => import('./components/widgetList'));
 const TaskList = React.lazy(() => import('./components/taskList'));
-// import TaskList from "./components/taskList";
+const StatisticCom = React.lazy(() => import('./components/statistic'));
+const ProgressCom = React.lazy(() => import('./components/progress'))
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 interface DashboardWidgetInfo {
@@ -25,23 +26,37 @@ interface DashboardWidgetInfo {
     layout: Layout
 }
 
-let _widgets: Array<any> = []
-try {
-    _widgets = JSON.parse(localStorage.getItem('widgets') || '') || []
-} catch (e) {
-    console.log(e)
-}
-
 function DashboardGird() {
     let a: any = 0
 
-    const [widgets, setWidgets] = useState<DashboardWidgetInfo[]>(_widgets);
+    const [widgets, setWidgets] = useState<DashboardWidgetInfo[]>(getWidgetList);
     const [currentCols, setCurrentCols] = useState<number>(12);
 
     const getLayouts: any = () => {
         return widgets.map(item => item.layout);
     }
 
+    function getWidgetList() {
+        return LStorage.get('dashboardWidget')?.widgets || [
+            {
+                widgetName: 'BarChartWidget',
+                layout: { i: 'BarChartWidget', x: 0, y: Infinity, w: 3, h: 2, static: false, isBounded: true }
+            },
+            {
+                widgetName: 'PieChartWidget',
+                layout: { i: 'PieChartWidget', x: 3, y: Infinity, w: 3, h: 2, static: false, isBounded: true }
+            },
+            {
+                widgetName: 'ProgressCom',
+                layout: { i: 'ProgressCom', x: 6, y: Infinity, w: 3, h: 2, static: false, isBounded: true }
+            },
+            {
+                widgetName: 'StatisticCom',
+                layout: { i: 'StatisticCom', x: 9, y: Infinity, w: 3, h: 2, static: false, isBounded: true }
+            }
+        ]
+
+    }
 
     const setLayoutStatic = (widget: DashboardWidgetInfo, staticFlag: boolean) => {
         const index = findIndex(widgets, (w: any) => w.widgetName === widget.widgetName);
@@ -72,6 +87,7 @@ function DashboardGird() {
     }
 
     const getWidgetComponent = (widgetName: string) => {
+        console.log(widgetName)
         if (widgetName === 'PieChartWidget') { //可以改成策略
             return (<React.Suspense>
                 <PieChartWidgetLazy />
@@ -80,17 +96,16 @@ function DashboardGird() {
             return (<React.Suspense>
                 <BarChartWidgetLazy />
             </React.Suspense>);
-        } else if (widgetName === 'table') {
+        } else if (widgetName === 'StatisticCom') {
             return (<React.Suspense>
-                <TableWidgetLazy />
+                <StatisticCom />
             </React.Suspense>)
-        } else if (widgetName === 'data') {
+        } else if (widgetName === 'ProgressCom') {
             return (<React.Suspense>
-                <DataWidgetLazy />
+                <ProgressCom />
             </React.Suspense>)
         }
     }
-
 
     const createWidget = (widget: DashboardWidgetInfo) => {
         const key = widget.widgetName || a++
@@ -107,7 +122,6 @@ function DashboardGird() {
         );
     }
 
-
     const onAddWidget = () => {
         const obj: any = {
             0: 'BarChartWidget',
@@ -123,16 +137,6 @@ function DashboardGird() {
             layout: { i: widgetName, x: x, y: Infinity, w: 3, h: 2, static: false, isBounded: true }
         }] as DashboardWidgetInfo[];
         setWidgets(newWidgets);
-    }
-
-    const handleClick = (e: any) => {
-        const widgetName: string = e.target.id
-        const x = (widgets.length * 3) % (currentCols);
-        const newWidgets = [...widgets, {
-            widgetName: widgetName,
-            layout: { i: widgetName, x: x, y: Infinity, w: 3, h: 2, static: false }
-        }] as DashboardWidgetInfo[];
-        setWidgets(newWidgets)
     }
 
     const onBreakpointChange = (newBreakpoint: string, newCols: number) => {
@@ -152,30 +156,46 @@ function DashboardGird() {
         setWidgets(newWidgets);
     }
 
-    const saveData = () => {
-        localStorage.setItem('widgets', JSON.stringify(widgets));
-    }
-
-    const clearData = () => {
-        localStorage.removeItem('widgets');
+    function saveDashboardCom() {
+        const saveData = {
+            widgets: widgets,
+            id: 'tokenId'
+        }
+        LStorage.set('dashboardWidget', saveData)
     }
 
     return (
-        <>
-            <TaskList></TaskList>
-            <Button onClick={onAddWidget}>add widget</Button>
-            <Button onClick={saveData}>saveData</Button>
-            <Button onClick={clearData}>ClearData</Button>
-            <SelectList handleClick={handleClick}></SelectList>
-            <ResponsiveReactGridLayout
-                layouts={getLayouts()}
-                className={'layouts'}
-                useCSSTransforms={true}
-                onLayoutChange={onLayoutChange}
-                onBreakpointChange={onBreakpointChange}>
-                {widgets?.map(item => createWidget(item))}
-            </ResponsiveReactGridLayout>
-        </>
+        <div className="dashboard-wrap">
+            <div style={{margin: '16px 0'}}>
+                <div style={{fontSize: '16px', margin: '16px 0'}}>
+                    dashboard component
+                    <ToolTipBtn tip="保存此次调整" btnProps={{type: 'text'}}>
+                        <i onClick={saveDashboardCom} className="iconfont icon-Save-toCloud"></i>
+                    </ToolTipBtn>
+                </div>
+                <ResponsiveReactGridLayout
+                    layouts={getLayouts()}
+                    className={'layouts'}
+                    margin={[16, 16]}
+                    useCSSTransforms={true}
+                    onLayoutChange={onLayoutChange}
+                    onBreakpointChange={onBreakpointChange}>
+                    {widgets?.map(item => createWidget(item))}
+                </ResponsiveReactGridLayout>
+            </div>
+            <div style={{display: 'grid',  gridTemplateColumns: '70% 30%', gridGap: '24px', marginRight: '24px'}}>
+                <div>
+                    <div style={{fontSize: '16px', margin: '16px 0'}}>今日待办</div>
+                    <TaskList></TaskList>
+                </div>
+                <div style={{minWidth: 0}}>
+                    <div style={{fontSize: '16px', margin: '16px 0'}}>组件列表</div>
+                    <WidgetList></WidgetList>
+                </div>
+            </div>
+            {/* <Button onClick={onAddWidget}>add widget</Button>
+            {/* <SelectList handleClick={handleClick}></SelectList> */}
+        </div>
     );
 }
 
