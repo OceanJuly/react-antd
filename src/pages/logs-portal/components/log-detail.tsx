@@ -10,7 +10,7 @@ import {
 import {
     getDetailLog,
     getLogInfo
-} from '@/api/logs'
+} from '@/api/logAPI'
 import to from 'await-to-js'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
@@ -105,6 +105,7 @@ function LogDetail() {
                 }
             })
             // 处理树节点
+            console.log(path2tree(pathStrs))
             setTreeData(path2tree(pathStrs))
             setLogs(detailLogs)
         }
@@ -131,10 +132,11 @@ function LogDetail() {
     }
 
     function renderLogInfo() {
-        return logs.map((log: any) => {
+        return logs.map((log: any, idx: number) => {
             if (log.logType === 2) {
                 return (
                     <div
+                        key={idx}
                         className="log-line"
                         style={{color: log.color}}
                     >{log.content}</div>
@@ -144,17 +146,17 @@ function LogDetail() {
                 let play: any
                 if (log.type === 'IMAGE') {
                     play = (
-                        <img src={log.url} onClick={showPicturePreview} />
+                        <img key={idx} src={log.url} onClick={showPicturePreview} />
                     )
                 } else {
                     play = (
-                        <video controls onClick={showPicturePreview}>
+                        <video key={idx} controls onClick={showPicturePreview}>
                             <source src={log.url} type="video/mp4"></source>
                         </video>
                     )
                 }
                 return (
-                    <div className="log-line" style={{ color: '#3d84b6'}}>
+                    <div key={idx} className="log-line" style={{ color: '#3d84b6'}}>
                         <span>{log.content}</span>    
                         {play}
                     </div>

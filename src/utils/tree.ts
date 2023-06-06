@@ -1,3 +1,5 @@
+import { cloneDeep } from "lodash"
+
 // 字符串路径数据转化为 tree 结构
 export function path2tree(strArr: Array<string>) {
     const res: any = []
@@ -11,14 +13,12 @@ export function path2tree(strArr: Array<string>) {
             const node = {
                 title: i
             }
-            if (children.length === 0) {
-            children.push(node)
-            }
+            if (children.length === 0) children.push(node)
             let isExist = false
             for (const j in children) {
             if (children[j].title === node.title) {
                 if (!children[j].children) {
-                children[j].children = []
+                    children[j].children = []
                 }
                 children = children[j].children
                 isExist = true
@@ -34,5 +34,22 @@ export function path2tree(strArr: Array<string>) {
             }
         }
     })
-    return res
+    return formatTreeData(res)
+}
+
+// 给树结构添加 key 属性
+export function formatTreeData(treeData: any) {
+    const find = (arr: any, parentId = '') => {
+      for (let i = 0; i < arr.length; i++) {
+        if (Array.isArray(arr[i].children) && arr[i].children.length > 0) {
+          arr[i].key = `${parentId}${i + 1}`
+          find(arr[i].children, `${parentId}${i + 1}`)
+        } else {
+          arr[i].key = `${parentId}${i + 1}`
+        }
+      }
+    }
+    const authDataCopy = cloneDeep(treeData)
+    find(authDataCopy)
+    return authDataCopy
 }

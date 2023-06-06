@@ -6,8 +6,8 @@ const Dashboard = lazy(() => import("@/pages/dashboard/dashboard"))
 const Home = lazy(() => import("@/pages/home/index"))
 const Process = lazy(() => import("@/pages/process/index"))
 const Login = lazy(() => import("@/pages/login"))
-const Logs = lazy(() => import("@/pages/logs"))
-const LogDetail = lazy(() => import("@/pages/logs/components/log-detail"))
+const Logs = lazy(() => import("@/pages/logs-portal/index"))
+const LogDetail = lazy(() => import("@/pages/logs-portal/components/log-detail"))
 const ItelIde = lazy(() => import("@/pages/test-case/itel-ide"))
 // 实现懒加载的用Suspense包裹 定义函数
 const lazyLoad = (children: ReactNode): ReactNode =>{

@@ -1,6 +1,6 @@
 import react, { useEffect, useState } from 'react'
 import { Table, Tag, Button } from "antd"
-import { getLogRecords } from '@/api/logs'
+import { getLogRecords } from '@/api/logAPI'
 import to from 'await-to-js'
 import moment from 'moment'
 import type { ColumnsType } from 'antd/es/table'
@@ -102,7 +102,7 @@ function Logs() {
 
     return (
         <>
-            <Table rowKey="testcaseExecutionId" dataSource={tableData} columns={cols}></Table>
+            <Table rowKey="dataCorrelationId" dataSource={tableData} columns={cols}></Table>
         </>
     )
 }

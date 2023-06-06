@@ -14,7 +14,7 @@ import {
 import {
   debounce
 } from 'lodash'
-import { getLogsDetail } from '@/api/logs';
+import { getLogsDetail } from '@/api/logAPI';
 import './index.less'
 import to from 'await-to-js';
 import moment from 'moment';
