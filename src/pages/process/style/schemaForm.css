@@ -1,0 +1,11 @@
+.rjsf-form-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.rjsf-form {
+    width: 360px;
+    height: 600px;
+}

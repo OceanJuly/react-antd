@@ -1,0 +1,95 @@
+.login-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Montserrat',sans-serif;
+    background-image: linear-gradient(120deg,#9fccdc,#599fac);;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    .login {
+        width: 640px;
+        background: rgba(255, 255, 255, 0.2);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(5px);
+        border-radius: 15px;
+        box-shadow: 20px 20px 50px rgba(0,0,0,0.5);
+        border-top: 1px solid rgba(255,255,255,0.5);
+        border-left: 1px solid rgba(255,255,255,0.5);
+        padding: 36px 24px;
+        .form-item {
+            border-bottom: 2px solid #adadad;
+            position: relative;
+            margin: 26px 0;
+            input {
+                font-size: 15px;
+                color: #333;
+                border: none;
+                width: 100%;
+                outline: none;
+                background: none;
+                padding: 0 3px;
+                height: 35px;
+            }
+            span::before {
+                content: attr(data-placeholder);
+                position: absolute;
+                top: 50%;
+                left: 5px;
+                color: #fff;
+                transform: translateY(-50%);
+                transition: .5s;
+            }
+            span::after {
+                content: '';
+                position: absolute;
+                left: 0%;
+                top: 100%;
+                width: 0%;
+                height: 2px;
+                background-image: linear-gradient(120deg,#8353D7,#bed5cb);
+                transition: .5s;
+            }
+        }
+        .focus-style + span::before {
+            top: -5px;
+        }
+        .focus-style + span::after {
+            width: 100%;
+        }
+        .login-button-wrap {
+            display: flex;
+            justify-content: right;
+            .login-button {
+                border-radius: 20px;
+                border: 1px solid #ff4b2b;
+                background: #ff4b2b;
+                color: #fff;
+                font-size: 12px;
+                font-weight: bold;
+                padding: 12px 45px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                transition: transform 80ms ease-in;
+                cursor: pointer;
+                background: linear-gradient(120deg, #3498db, #e0e0d0);
+                border: none;
+                background-size: 200%;
+                color: #fff;
+                transition: .5s;
+                &:active {
+                    transform: scale(.95);
+                }
+                &:hover {
+                    background-position: right;
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+}

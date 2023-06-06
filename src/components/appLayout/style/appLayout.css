@@ -1,0 +1,8 @@
+.app-layout {
+  .site-layout-sider {
+    background-color: #fff;
+  }
+  .header {
+    border-left: 1px solid #eee;
+  }
+}
