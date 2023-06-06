@@ -1,0 +1,95 @@
+.log-detail-wrap {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-gap: 16px;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    .left-content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        transition: all .5s;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        .code-wrap,
+        .tree-wrap {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 0;
+          left: 0;
+          backface-visibility: hidden;
+          .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            height: 60px;
+            .title {
+                font-size: 16px;
+                line-height: 20px;
+                color: #3e9779;
+            }
+          }
+          .right-btn {
+              cursor: pointer;
+              padding: 8px 12px;
+          }
+        }
+        .code-wrap {
+          z-index: 1;
+        }
+        .tree-wrap {
+          transform: rotateY(180deg);
+        }
+    }
+    .right-content {
+        width: 100%;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            height: 60px;
+            .title {
+                font-size: 16px;
+                line-height: 20px;
+            }
+            .right-btn {
+                display: flex;
+                .btn-item {
+                    cursor: pointer;
+                    padding: 6px 8px;
+                    font-size: 20px;
+                }
+            }
+        }
+        .log-info-wrap {
+            font-family: monospace, monospace;
+            font-size: 16px;
+            line-height: 1.5;
+            padding: 8px 16px;
+            height: 100%;
+            background-color: #fff;
+            overflow: auto;
+            img,
+            video {
+                display: block;
+                width: 200px;
+                height: 450px;
+                cursor: pointer;
+            }
+        }
+    }
+}

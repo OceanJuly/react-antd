@@ -1,0 +1,34 @@
+.log-detail-modal-wrap {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    .info-filter-list {
+      flex: 1;
+      display: flex;
+      .filter-item {
+        display: flex;
+        white-space: nowrap;
+        align-items: center;
+        min-width: 240px;
+        max-width: 360px; 
+        width: 100%;
+        margin-right: 16px;
+      }
+    }
+    .search-wrap {
+      width: 240px;
+    }
+  }
+  .logs {
+    flex: 1;
+    overflow: auto; 
+    position: relative;
+    margin-top: 24px;
+    .log-tab {
+      margin: 0;
+    }
+  }
+}
