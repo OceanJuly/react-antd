@@ -48,7 +48,7 @@ export default function AppLayout() {
         getItem('Bill', '4'),
         getItem('Alex', '5'),
     ]),
-    getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+    getItem('Data Modeler', '/datamodeler', <TeamOutlined />),
     getItem('Files', '9', <FileOutlined />),
   ]
 

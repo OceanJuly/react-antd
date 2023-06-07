@@ -9,6 +9,8 @@ const Login = lazy(() => import("@/pages/login"))
 const Logs = lazy(() => import("@/pages/logs-portal/index"))
 const LogDetail = lazy(() => import("@/pages/logs-portal/components/log-detail"))
 const ItelIde = lazy(() => import("@/pages/test-case/itel-ide"))
+const DataModeler = lazy(() => import("@/pages/data-modeler"))
+const DataModelerDetail = lazy(() => import("@/pages/data-modeler/components/detail"))
 // 实现懒加载的用Suspense包裹 定义函数
 const lazyLoad = (children: ReactNode): ReactNode =>{
     return <Suspense fallback={<h1>Loading...</h1>}>
@@ -66,6 +68,20 @@ export const routes: RouteObject[] = [
             {
                 path: '/testcase/ide',
                 element: lazyLoad(<ItelIde/>),
+            }
+        ]
+    },
+    {
+        path: '/datamodeler',
+        element: <AppLayout></AppLayout>,
+        children: [
+            {
+                path: '/datamodeler',
+                element: <DataModeler></DataModeler>
+            },
+            {
+                path: '/datamodeler/detail/:name',
+                element: <DataModelerDetail></DataModelerDetail>
             }
         ]
     }
