@@ -15,6 +15,7 @@ import to from 'await-to-js'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
 import ImagePreview from '@/components/basic/picture-preview'
+import ImageViewer from '@/components/basic/image-viewer'
 import ToolTipBtn from '@/components/basic/toolTip-btn'
 import FnTree from './fn-tree'
 import LogDetailModal from './log-detail-modal'
@@ -51,7 +52,9 @@ function LogDetail() {
             setImgs(res[0].map((a: any) => {
                 return {
                     src: a.content,
-                    name: a.msgName
+                    name: a.msgName,
+                    type: a.contentType,
+                    id: a.timestamp
                 }
             }))
             const numKeyMap: any = {}
@@ -105,7 +108,6 @@ function LogDetail() {
                 }
             })
             // 处理树节点
-            console.log(path2tree(pathStrs))
             setTreeData(path2tree(pathStrs))
             setLogs(detailLogs)
         }
@@ -117,13 +119,13 @@ function LogDetail() {
         setShowTree(!showTree)
     }
 
-    function showPicturePreview() {
-        //
+    function showPicturePreview(e: any) {
+        const index = e.target.attributes['data-index'].value
+        setIndex(Number(index))
         setShow(true)
     }
 
     function changeLogShow() {
-        // 
         setShowImageLog(!showImageLog)
     }
 
@@ -132,6 +134,7 @@ function LogDetail() {
     }
 
     function renderLogInfo() {
+        let imgIndex = 0
         return logs.map((log: any, idx: number) => {
             if (log.logType === 2) {
                 return (
@@ -146,17 +149,19 @@ function LogDetail() {
                 let play: any
                 if (log.type === 'IMAGE') {
                     play = (
-                        <img key={idx} src={log.url} onClick={showPicturePreview} />
+                        <img data-index={imgIndex} key={idx} src={log.url} onClick={(e) => showPicturePreview(e)} />
                     )
+                    imgIndex++
                 } else {
                     play = (
-                        <video key={idx} controls onClick={showPicturePreview}>
+                        <video data-index={imgIndex} key={idx} controls onClick={(e) => showPicturePreview(e)}>
                             <source src={log.url} type="video/mp4"></source>
                         </video>
                     )
+                    imgIndex++
                 }
                 return (
-                    <div key={idx} className="log-line" style={{ color: '#3d84b6'}}>
+                    <div key={idx}  className="log-line" style={{ color: '#3d84b6'}}>
                         <span>{log.content}</span>    
                         {play}
                     </div>
@@ -216,14 +221,20 @@ function LogDetail() {
                     </div>
                 </div>
             </div>
-            <ImagePreview
+            {/* <ImagePreview
                 isShow={show}
                 toggle={() => setShow(!show)}
                 images={imgs}
                 index={index}
                 nextImg={() => setIndex(index + 1)}
                 preImg={() => setIndex(index - 1)}
-            ></ImagePreview>
+            ></ImagePreview> */}
+            <ImageViewer
+                show={show}
+                images={imgs}
+                index={index}
+                close={() => setShow(!show)}
+            ></ImageViewer>
             <LogDetailModal
                 show={showLogDetailModal}
                 close={showLogDetail}
