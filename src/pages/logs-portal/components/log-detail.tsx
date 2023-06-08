@@ -47,7 +47,7 @@ function LogDetail() {
             if (err) return
             const detailLogs: any = []
             const pathStrs: Array<string> = []
-            const info: any = res.flat().sort((a: any, b: any) => a.timestamp - b.timestamp)
+            const info: any = res.flat().sort((a: any, b: any) => b.timestamp - a.timestamp)
             // 图片列表
             setImgs(res[0].map((a: any) => {
                 return {

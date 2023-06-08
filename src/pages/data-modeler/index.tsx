@@ -36,6 +36,7 @@ function DataModeler() {
         cardList.map((card: any) => {
           return (
             <Card
+              key={card.name}
               title={card.title}
               extra={<Button type="text" onClick={() => go2detail(card.title)} style={{color: 'green'}}>详情</Button>}
               style={{ width: 300, marginRight: '16px' }}

@@ -55,7 +55,7 @@ function LogDetailModal(props: Props) {
         else _logMap[type] = [logItem]
       })
       const _tabs = Object.keys(_logMap).map((key: string) => {
-        _logMap[key] = _logMap[key].sort((a: any, b: any) => a.timeStamp - b.timeStamp)
+        _logMap[key] = _logMap[key].sort((a: any, b: any) => b.timeStamp - a.timeStamp)
         return {
           label: key.toUpperCase(),
           key: key,

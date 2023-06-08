@@ -12,7 +12,7 @@ export default defineConfig({
       iconDirs: [resolve(process.cwd(), "src/assets/icons")],
       svgoOptions: {},
       symbolId: "icon-[dir]-[name]"
-    }),
+    })
   ],
   css: {
     // 预处理配置
