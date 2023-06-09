@@ -4,9 +4,12 @@ import {
   useParams
 } from 'react-router-dom'
 import to from 'await-to-js'
+import { tagList, tagProp } from './const'
+import './data-modeler-detail.less'
 
 import SortableTree from '@nosferatu500/react-sortable-tree';
 import '@nosferatu500/react-sortable-tree/style.css';
+import { Button } from 'antd'
 
 const initialTreeData = [
   {
@@ -40,7 +43,7 @@ function WorkSpaceDetail() {
       console.log(res)
     }
     getDataMOdelerDetail()
-  })
+  }, [])
 
   function handleChange(treeData: any) {
     console.log(treeData)
@@ -56,15 +59,49 @@ function WorkSpaceDetail() {
   //   )
   // }
 
+  function renderTagList() {
+    return tagList.map((tag: tagProp) => {
+      return (
+        <div
+          className="node-wrap"
+          draggable
+          onDragStart={event => {
+            event.dataTransfer.setData('text/plain', 'My draggable element');
+            event.dataTransfer.setData('myNodeType', 'myNodeType');
+          }}
+        >{tag.name}</div>
+      )
+    })
+  }
+
+  function handleDrop(dropInfo: any) {
+    console.log('1', dropInfo)
+    const { node, path } = dropInfo;
+    const draggedNodeData = JSON.parse(
+      dropInfo.event.dataTransfer.getData('text/plain')
+    );
+
+    // 将拖拽元素添加到树中
+    const newNode = { title: draggedNodeData };
+
+    // 更新树的数据
+  }
+
   return (
-    <>
-      <div style={{ height: 400 }}>
+    <div className="work-space-detail-wrap">
+      <div className="tag-list">
+        {renderTagList()}
+      </div>
+      <div className="tree-wrap" style={{ height: 400 }}>
         <SortableTree
           treeData={treeData}
           onChange={handleChange}
+          dndType="myNodeType"
+          onDrop={handleDrop}
+          shouldCopyOnOutsideDrop={() => true}
         />
       </div>
-    </>
+    </div>
   )
 }
 
